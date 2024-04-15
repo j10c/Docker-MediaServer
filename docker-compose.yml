@@ -1,0 +1,124 @@
+services: 
+#
+  wireguard: # Add more wg.conf files to final implementation
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - SERVERURL=wireguard.domain.com #optional
+      - SERVERPORT=51820 #optional
+      #- PEERS=1 #optional
+      #- PEERDNS=auto #optional
+      #- INTERNAL_SUBNET=10.13.13.0 #optional
+      #- ALLOWEDIPS=0.0.0.0/0 #optional
+      #- PERSISTENTKEEPALIVE_PEERS= #optional
+      #- LOG_CONFS=true #optional
+    volumes:
+      - /appdata/wireguard:/config
+      #- /lib/modules:/lib/modules #optional
+    ports:
+      - 51820:51820/udp
+      - 7878:7878 # radarr
+      - 8989:8989 # sonarr
+      - 5055:5055 # overseerr
+      - 8080:8080 # qbittorrent
+      - 6881:6881 # qbittorrent
+      - 6881:6881/udp #qbittorrent
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+#
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /appdata/radarr:/config 
+      - /data:/data # Grants access to entire /data structure
+    #ports: [routed to wireguard]
+      #- 7878:7878
+    restart: unless-stopped
+#    
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /appdata/sonarr:/config
+      - /data:/data # Grants access to entire /data structure
+    #ports:
+      #- 8989:8989
+    restart: unless-stopped
+#
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /appdata/overseerr:/config
+      - /data/indexer:/data/indexer
+    #ports:
+      #- 5055:5055
+    restart: unless-stopped
+#
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - /appdata/qbittorrent:/config
+      - /data/torrents:/data/torrents
+    #ports:
+      #- 8080:8080
+      #- 6881:6881
+      #- 6881:6881/udp
+    restart: unless-stopped
+#
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - VERSION=docker
+      #- PLEX_CLAIM= #optional
+    volumes:
+      - /appdata/plex:/config
+      - /data/media/movies:/data/media/movies
+      - /data/media/shows:/data/media/shows
+    #ports
+      #- 32400:32400
+    restart: unless-stopped
