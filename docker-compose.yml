@@ -46,7 +46,7 @@ services:
     volumes:
       - /appdata/radarr:/config 
       - /data:/data # Grants access to entire /data structure
-    #ports: [routed to wireguard]
+    #ports:
       #- 7878:7878
     restart: unless-stopped
 #    
