@@ -114,11 +114,15 @@ services:
       - PGID=1000
       - TZ=America/Chicago
       - VERSION=docker
-      #- PLEX_CLAIM= #optional
+      #- PLEX_CLAIM=YourClaimCodeGoesHere #optional
+      #- ADVERTISE_IP=http://docker container ip address
     volumes:
       - /appdata/plex:/config
       - /data/media/movies:/data/media/movies
       - /data/media/shows:/data/media/shows
+      #- Final build will need drives mounted
     #ports
       #- 32400:32400
+      #- MAY NEED MORE PORTS
+      #hostname: Plex
     restart: unless-stopped

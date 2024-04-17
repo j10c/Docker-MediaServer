@@ -1,0 +1,53 @@
+...
+FILE STRUCTURE
+/appdata 
+    /radarr         # mounting point for /config in Docker-compose
+    /sonarr 
+    /overseerr
+    /qbittorrent
+    /plex
+    /wireguard      # contains VPN .conf files
+
+/data               # volume for Radarr, Sonarr, Overseerr
+    /torrents       # volume for qBittorrent 
+        /movies
+        /shows
+    /media          # volume for Plex   
+        /movies
+        /shows
+    /indexer
+        /incomplete 
+        /complete
+            /movies
+            /shows
+
+...
+APPLICATIONS
+> Curl :: https://everything.curl.dev
+> Net-tools :: https://net-tools.sourceforge.io
+> OpenSSH Server :: https://ubuntu.com/server/docs/service-openssh
+> XRDP :: https://www.xrdp.org
+> Docker.io :: https://docs.docker.com/manuals/
+
+...
+PERMISSIONS
+>
+
+...
+FIREWALL CHANGES [whitelist]
+> 3389/tcp          # xrdp
+> ssh               # ssh  
+> 
+
+...
+CONTAINER PORT MAPPINGS
+> 7878:7878         # radarr
+> 8989:8989         # sonarr
+> 5055:5055         # overseerr
+> 8080:8080         # qbittorrent
+> 6881:6881         # qbittorrent
+> 6881:6881/udp     # qbittorrent
+> 51820:51820/udp   # wireguard
+> 32400:32400       # plex
+
+...
