@@ -20,7 +20,11 @@ sudo apt update -y
 
 ### Applications ###
 # Install applications (Networking tools & Docker)
-sudo apt install curl net-tools openssh-server xrdp docker.ce -y
+sudo apt install curl -y
+sudo apt install net-tools
+sudo apt install openssh-server -y
+sudo apt install xrdp -y
+sudo apt install docker.ce -y
 
 ## Configure applications ##
 # OpenSSH Server :: firewall exception
@@ -31,6 +35,7 @@ sudo systemctl start xrdp
 sudo ufw allow 3389/tcp
 sudo ufw enable -y
 sudo /etc/init.d/xrdp restart
+sleep 5
 # Docker :: Install compose from github, make directory for it, modify permissions
 sudo systemctl enable --now docker
 mkdir -p ~/.docker/cli-plugins/
