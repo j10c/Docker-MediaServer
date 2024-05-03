@@ -45,7 +45,7 @@ services:
       - TZ=America/Chicago
     volumes:
       - /appdata/radarr:/config 
-      - /data:/data # Grants access to entire /data structure
+      - //M:/data:/data # Grants access to entire /data structure
     #ports:
       #- 7878:7878
     restart: unless-stopped
@@ -62,7 +62,7 @@ services:
       - TZ=America/Chicago
     volumes:
       - /appdata/sonarr:/config
-      - /data:/data # Grants access to entire /data structure
+      - //M:/data:/data # Grants access to entire /data structure
     #ports:
       #- 8989:8989
     restart: unless-stopped
@@ -79,7 +79,7 @@ services:
       - TZ=America/Chicago
     volumes:
       - /appdata/overseerr:/config
-      - /data/indexer:/data/indexer
+      - //M:/data/usenet:/data/indexer
     #ports:
       #- 5055:5055
     restart: unless-stopped
@@ -98,7 +98,7 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - /appdata/qbittorrent:/config
-      - /data/torrents:/data/torrents
+      - //M:/data/torrents:/data/torrents
     #ports:
       #- 8080:8080
       #- 6881:6881
@@ -118,11 +118,12 @@ services:
       #- ADVERTISE_IP=http://docker container ip address
     volumes:
       - /appdata/plex:/config
-      - /data/media/movies:/data/media/movies
-      - /data/media/shows:/data/media/shows
+      - //M:/data/media/movies:/data/media/movies
+      - //M:/data/media/shows:/data/media/shows
       #- Final build will need drives mounted
     #ports
       #- 32400:32400
       #- MAY NEED MORE PORTS
       #hostname: Plex
     restart: unless-stopped
+

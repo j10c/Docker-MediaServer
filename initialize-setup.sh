@@ -4,8 +4,8 @@
 sudo usermod -aG sudo ${USER}
 
 # Create directories for apps (running the applications) and data (manage torrents and media)
-sudo mkdir -p /appdata/radarr /appdata/sonarr /appdata/overseerr /appdata/plex /appdata/qbittorrent /appdata/wireguard
-sudo mkdir -p /data/torrents/movies /data/torrents/shows /data/media/movies /data/media/shows /data/indexer/incomplete /data/indexer/complete/movies /data/indexer/complete/shows
+sudo mkdir -p /docker/appdata/radarr /docker/appdata/sonarr /docker/appdata/overseerr /docker/appdata/plex /docker/appdata/qbittorrent /docker/appdata/wireguard /docker/appdata/usenet
+
 # Folder permissions?
 
 # appearance=dark, dock icons size=24, terminal=favorites

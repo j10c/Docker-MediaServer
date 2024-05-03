@@ -1,12 +1,13 @@
 ...
 FILE STRUCTURE
-/appdata 
-    /radarr         # mounting point for /config in Docker-compose
-    /sonarr 
-    /overseerr
-    /qbittorrent
-    /plex
-    /wireguard      # contains VPN .conf files
+/docker
+    /appdata
+        /radarr         # mounting point for /config in Docker-compose
+        /sonarr 
+        /overseerr
+        /qbittorrent
+        /plex
+        /wireguard      # contains VPN .conf files
 
 /data               # volume for Radarr, Sonarr, Overseerr
     /torrents       # volume for qBittorrent 
@@ -15,7 +16,7 @@ FILE STRUCTURE
     /media          # volume for Plex   
         /movies
         /shows
-    /indexer
+    /usenet
         /incomplete 
         /complete
             /movies
