@@ -23,28 +23,28 @@ sudo apt update -y
 sudo apt install curl -y
 sudo apt install net-tools
 sudo apt install openssh-server -y
-sudo apt install xrdp -y
 sudo apt install docker.ce -y
 
 ## Configure applications ##
 # OpenSSH Server :: firewall exception
 sudo ufw allow ssh
-# Remote Desktop Protocol :: On startup, firewall exception @3389/tcp
-sudo systemctl enable xrdp
-sudo systemctl start xrdp
-sudo ufw allow 3389/tcp
-sudo ufw enable -y
-sudo /etc/init.d/xrdp restart
-sleep 5
-# Docker :: Install compose from github, make directory for it, modify permissions
-sudo systemctl enable --now docker
-mkdir -p ~/.docker/cli-plugins/
-curl -SL https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-sudo chmod +x ~/.docker/cli-plugins/docker-compose 
-sudo chmod 666 /var/run/docker.sock
-# Portainer ::
-# volume?
-docker pull portainer/portainer-ce
+
+# Docker install
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# Docker part 2
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 ### End of Applications ###
 sudo apt upgrade -y
