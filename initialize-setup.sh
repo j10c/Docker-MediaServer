@@ -23,7 +23,6 @@ sudo apt update -y
 sudo apt install curl -y
 sudo apt install net-tools
 sudo apt install openssh-server -y
-sudo apt install docker.ce -y
 
 ## Configure applications ##
 # OpenSSH Server :: firewall exception
