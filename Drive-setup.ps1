@@ -1,16 +1,16 @@
 # Assign drive name
-$driveLetter = "M:"
+$driveLetter = "D:"
 # Assign the path for the shared folder
 $sharedFolderPath = "$driveLetter\data"
 # Create directories
 $directories = @(
-    "M:\data\media\movies"
-    "M:\data\media\shows"
-    "M:\data\torrents\movies"
-    "M:\data\torrents\shows"
-    "M:\data\usenet\incomplete"
-    "M:\data\usenet\complete\movies"
-    "M:\data\usenet\complete\shows"
+    "D:\data\media\movies"
+    "D:\data\media\shows"
+    "D:\data\torrents\movies"
+    "D:\data\torrents\shows"
+    "D:\data\nzbget\incomplete"
+    "D:\data\nzbget\complete\movies"
+    "D:\data\nzbget\complete\shows"
 )
 foreach ($dir in $directories) {
     New-Item -ItemType Directory -Path $dir -Force
@@ -19,7 +19,7 @@ foreach ($dir in $directories) {
 New-SmbShare -Name "Data" -Path $sharedFolderPath -FullAccess "Everyone"
 
 # Set directory permissions: M:\data\ Everyone has FULL Access
-$topLevelDirectory = "M:\data\"
+$topLevelDirectory = "D:\data\"
 $acl = Get-Acl -Path $topLevelDirectory
 $permission = "Everyone", "FullControl", "Allow"
 $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($permission)

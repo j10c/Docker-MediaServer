@@ -4,9 +4,7 @@
 sudo usermod -aG sudo ${USER}
 
 # Create directories for apps (running the applications) and data (manage torrents and media)
-sudo mkdir -p /docker/appdata/radarr /docker/appdata/sonarr /docker/appdata/overseerr /docker/appdata/plex /docker/appdata/qbittorrent /docker/appdata/wireguard /docker/appdata/usenet
-
-# Folder permissions?
+sudo mkdir -p /docker/appdata/radarr /docker/appdata/sonarr /docker/appdata/overseerr /docker/appdata/plex /docker/appdata/qbittorrent /docker/appdata/wireguard /docker/appdata/nzbget
 
 # appearance=dark, dock icons size=24, terminal=favorites
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
@@ -21,7 +19,7 @@ sudo apt update -y
 ### Applications ###
 # Install applications (Networking tools & Docker)
 sudo apt install curl -y
-sudo apt install net-tools
+sudo apt install net-tools -y
 sudo apt install openssh-server -y
 
 ## Configure applications ##
@@ -44,6 +42,10 @@ sudo apt-get update
 
 # Docker part 2
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+### External drive permissions
+sudo chown -R $USER:$USER /media/jc-admin/media01/data
+sudo chmod -R a=,a+rX,u+w,g+w /media/jc-admin/media01/data
 
 ### End of Applications ###
 sudo apt upgrade -y

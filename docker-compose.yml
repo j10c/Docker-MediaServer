@@ -19,10 +19,11 @@ services:
       #- PERSISTENTKEEPALIVE_PEERS= #optional
       #- LOG_CONFS=true #optional
     volumes:
-      - /appdata/wireguard:/config
+      - /docker/appdata/wireguard:/config
       #- /lib/modules:/lib/modules #optional
     ports:
       - 51820:51820/udp
+      - 6789:6789 # nzbget / usenet
       - 7878:7878 # radarr
       - 8989:8989 # sonarr
       - 5055:5055 # overseerr
@@ -44,8 +45,8 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /appdata/radarr:/config 
-      - //M:/data:/data # Grants access to entire /data structure
+      - /docker/appdata/radarr:/config 
+      - /media/jc-admin/media01/data:/data # Grants access to entire /data structure
     #ports:
       #- 7878:7878
     restart: unless-stopped
@@ -61,8 +62,8 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /appdata/sonarr:/config
-      - //M:/data:/data # Grants access to entire /data structure
+      - /docker/appdata/sonarr:/config
+      - /media/jc-admin/media01/data:/data # Grants access to entire /data structure
     #ports:
       #- 8989:8989
     restart: unless-stopped
@@ -78,10 +79,29 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /appdata/overseerr:/config
-      - //M:/data/usenet:/data/indexer
+      - /docker/appdata/overseerr:/config
+      - /media/jc-admin/media01/data:/nzbget:/data/
     #ports:
       #- 5055:5055
+    restart: unless-stopped
+#
+  nzbget:
+    image: lscr.io/linuxserver/nzbget:latest
+    container_name: nzbget
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - NZBGET_USER=nzbget #optional
+      - NZBGET_PASS=tegbzn6789 #optional
+    volumes: 
+      - /docker/appdata/nzbget:/config
+      - /media/jc-admin/media01/data/nzbget:/data/nzbget
+    ports:
+      #- 6789:6789
     restart: unless-stopped
 #
   qbittorrent:
@@ -97,7 +117,7 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - /appdata/qbittorrent:/config
+      - /docker/appdata/qbittorrent:/config
       - //M:/data/torrents:/data/torrents
     #ports:
       #- 8080:8080
@@ -117,9 +137,9 @@ services:
       #- PLEX_CLAIM=YourClaimCodeGoesHere #optional
       #- ADVERTISE_IP=http://docker container ip address
     volumes:
-      - /appdata/plex:/config
-      - //M:/data/media/movies:/data/media/movies
-      - //M:/data/media/shows:/data/media/shows
+      - /docker/appdata/plex:/config
+      - /media/jc-admin/media01/data/media/movies:/data/media/movies
+      - /media/jc-admin/media01/data/media/shows:/data/media/shows
       #- Final build will need drives mounted
     #ports
       #- 32400:32400

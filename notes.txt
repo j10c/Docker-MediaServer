@@ -7,7 +7,8 @@ FILE STRUCTURE
         /overseerr
         /qbittorrent
         /plex
-        /wireguard      # contains VPN .conf files
+        /wireguard
+        /nzbget      # contains VPN .conf files
 
 /data               # volume for Radarr, Sonarr, Overseerr
     /torrents       # volume for qBittorrent 
@@ -16,7 +17,7 @@ FILE STRUCTURE
     /media          # volume for Plex   
         /movies
         /shows
-    /usenet
+    /nzbget
         /incomplete 
         /complete
             /movies
@@ -38,7 +39,7 @@ PERMISSIONS
 FIREWALL CHANGES [whitelist]
 > 3389/tcp          # xrdp
 > ssh               # ssh  
-> 
+> 51820/tcp         # wireguard
 
 ...
 CONTAINER PORT MAPPINGS
@@ -50,5 +51,6 @@ CONTAINER PORT MAPPINGS
 > 6881:6881/udp     # qbittorrent
 > 51820:51820/udp   # wireguard
 > 32400:32400       # plex
+> 6789:6789         # NZBget
 
 ...
