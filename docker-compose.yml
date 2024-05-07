@@ -23,7 +23,7 @@ services:
       #- /lib/modules:/lib/modules #optional
     ports:
       - 51820:51820/udp
-      - 6789:6789 # nzbget / usenet
+      - 6789:6789 # nzbget
       - 7878:7878 # radarr
       - 8989:8989 # sonarr
       - 5055:5055 # overseerr
@@ -100,7 +100,7 @@ services:
     volumes: 
       - /docker/appdata/nzbget:/config
       - /media/jc-admin/media01/data/nzbget:/data/nzbget
-    ports:
+    #ports:
       #- 6789:6789
     restart: unless-stopped
 #
