@@ -118,7 +118,7 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - /docker/appdata/qbittorrent:/config
-      - //M:/data/torrents:/data/torrents
+      - /media/jc-admin/media01/data/torrents:/data/torrents
     #ports:
       #- 8080:8080
       #- 6881:6881
@@ -136,14 +136,17 @@ services:
       - VERSION=docker
       #- PLEX_CLAIM=YourClaimCodeGoesHere #optional
       #- ADVERTISE_IP=http://docker container ip address
+    devices:
+      - /dev/dri:/dev/dri
     volumes:
+      #- /dev/shm:/transcode transcoding location?
       - /docker/appdata/plex:/config
       - /media/jc-admin/media01/data/media/movies:/data/media/movies
       - /media/jc-admin/media01/data/media/shows:/data/media/shows
       #- Final build will need drives mounted
-    #ports
-      #- 32400:32400
+    ports:
+      - 32400:32400
       #- MAY NEED MORE PORTS
-      #hostname: Plex
+      hostname: Plex
     restart: unless-stopped
 
