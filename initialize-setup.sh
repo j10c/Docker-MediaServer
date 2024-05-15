@@ -24,7 +24,7 @@ sudo apt install openssh-server -y
 
 ## Configure applications ##
 # OpenSSH Server :: firewall exception
-sudo ufw allow ssh
+sudo ufw allow OpenSSH
 
 # Docker install
 sudo apt-get update
@@ -43,9 +43,12 @@ sudo apt-get update
 # Docker part 2
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+### External Drive
+sudo mkdir /media/d1media
+
 ### External drive permissions
-sudo chown -R $USER:$USER /media/jc-admin/media01/data
-sudo chmod -R a=,a+rX,u+w,g+w /media/jc-admin/media01/data
+sudo chown -R $USER:$USER /media/d1media/data
+sudo chmod -R a=,a+rX,u+w,g+w /media/d1media/data
 
 ### End of Applications ###
 sudo apt upgrade -y

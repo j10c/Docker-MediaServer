@@ -7,8 +7,8 @@ FILE STRUCTURE
         /overseerr
         /qbittorrent
         /plex
-        /wireguard
-        /nzbget      # contains VPN .conf files
+        /wireguard  # contains VPN .conf files
+        /usenet     
 
 /data               # volume for Radarr, Sonarr, Overseerr
     /torrents       # volume for qBittorrent 
@@ -17,7 +17,7 @@ FILE STRUCTURE
     /media          # volume for Plex   
         /movies
         /shows
-    /nzbget
+    /usenet
         /incomplete 
         /complete
             /movies
@@ -28,8 +28,6 @@ APPLICATIONS
 > Curl :: https://everything.curl.dev
 > Net-tools :: https://net-tools.sourceforge.io
 > OpenSSH Server :: https://ubuntu.com/server/docs/service-openssh
-> XRDP :: https://www.xrdp.org
-> Docker.io :: https://docs.docker.com/manuals/
 
 ...
 PERMISSIONS
@@ -37,7 +35,6 @@ PERMISSIONS
 
 ...
 FIREWALL CHANGES [whitelist]
-> 3389/tcp          # xrdp
 > ssh               # ssh  
 > 51820/tcp         # wireguard
 
