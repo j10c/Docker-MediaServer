@@ -128,16 +128,16 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    network_mode: host
+    #network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
       - VERSION=docker
       #- PLEX_CLAIM=YourClaimCodeGoesHere #optional
-      #- ADVERTISE_IP=http://docker container ip address
-    devices:
-      - /dev/dri:/dev/dri
+      #- ADVERTISE_IP=http://
+    #devices:
+      #- /dev/dri:/dev/dri
     volumes:
       #- /dev/shm:/transcode transcoding location?
       - /docker/appdata/plex:/config
