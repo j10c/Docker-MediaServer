@@ -52,7 +52,7 @@ sudo chmod -R a=,a+rX,u+w,g+w /media/d1media/
 
 #Docker group for permissions
 sudo groupadd docker
-sudo usrmod -aG ${USER}
+sudo usermod -aG ${USER}
 su -s ${USER}
 sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
 sudo chmod g+rwx "$HOME/.docker" -R
