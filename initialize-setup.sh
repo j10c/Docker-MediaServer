@@ -56,6 +56,7 @@ sudo usrmod -aG ${USER}
 su -s ${USER}
 sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
 sudo chmod g+rwx "$HOME/.docker" -R
+sudo chmod 666 /var/run/docker.sock
 
 ### End of Applications ###
 sudo apt upgrade -y
