@@ -47,8 +47,15 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo mkdir /media/d1media
 
 ### External drive permissions
-sudo chown -R $USER:$USER /media/d1media/data
-sudo chmod -R a=,a+rX,u+w,g+w /media/d1media/data
+sudo chown -R $USER:$USER /media/d1media/
+sudo chmod -R a=,a+rX,u+w,g+w /media/d1media/
+
+#Docker group for permissions
+sudo groupadd docker
+sudo usrmod -aG ${USER}
+su -s ${USER}
+sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+sudo chmod g+rwx "$HOME/.docker" -R
 
 ### End of Applications ###
 sudo apt upgrade -y
