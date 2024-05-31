@@ -46,7 +46,7 @@ services:
       - TZ=America/Chicago
     volumes:
       - /docker/appdata/radarr:/config 
-      - /media/d1media/data:/data # Grants access to entire /data structure
+      - /media/media01/data:/data # Grants access to entire /data structure
     #ports:
       #- 7878:7878
     restart: unless-stopped
@@ -63,7 +63,7 @@ services:
       - TZ=America/Chicago
     volumes:
       - /docker/appdata/sonarr:/config
-      - /media/d1media/data:/data # Grants access to entire /data structure
+      - /media/media01/data:/data # Grants access to entire /data structure
     #ports:
       #- 8989:8989
     restart: unless-stopped
@@ -80,7 +80,7 @@ services:
       - TZ=America/Chicago
     volumes:
       - /docker/appdata/overseerr:/config
-      - /media/d1media/data/nzbget:/data/ # Potential error with this mounting point
+      - /media/media01/data/nzbget:/data/ # Potential error with this mounting point
     #ports:
       #- 5055:5055
     restart: unless-stopped
@@ -99,7 +99,7 @@ services:
       - NZBGET_PASS=tegbzn6789 #optional
     volumes: 
       - /docker/appdata/nzbget:/config
-      - /media/d1media/data/usenet:/data/usenet
+      - /media/media01/data/usenet:/data/usenet
     #ports:
       #- 6789:6789
     restart: unless-stopped
@@ -118,7 +118,7 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - /docker/appdata/qbittorrent:/config
-      - /media/d1media/data/torrents:/data/torrents
+      - /media/media01/data/torrents:/data/torrents
     #ports:
       #- 8080:8080
       #- 6881:6881
@@ -141,8 +141,8 @@ services:
     volumes:
       #- /dev/shm:/transcode transcoding location?
       - /docker/appdata/plex:/config
-      - /media/d1media/data/media/movies:/data/media/movies
-      - /media/d1media/data/media/shows:/data/media/shows
+      - /media/media01/data/media/movies:/data/media/movies
+      - /media/media01/data/media/shows:/data/media/shows
       #- Final build will need drives mounted
     ports:
       - 32400:32400

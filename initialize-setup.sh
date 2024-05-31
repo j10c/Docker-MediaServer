@@ -21,6 +21,7 @@ sudo apt update -y
 sudo apt install curl -y
 sudo apt install net-tools -y
 sudo apt install openssh-server -y
+sudo apt install nfs-common -y
 
 ## Configure applications ##
 # OpenSSH Server :: firewall exception
@@ -44,12 +45,12 @@ sudo apt-get update -y
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 ### External Drive
-sudo mkdir /media/d1media
+sudo mkdir /media/media01
 
 ### External drive permissions
-sudo chown -R $USER:$USER /media/d1media/
-sudo chmod -R a=,a+rX,u+w,g+w /media/d1media/
-
+sudo chown -R $USER:$USER /media/media01
+sudo chmod -R a=,a+rX,u+w,g+w /media/media01
+ß
 #Docker group for permissions
 sudo groupadd docker
 sudo usermod -aG ${USER}
