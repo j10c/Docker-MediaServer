@@ -44,8 +44,8 @@ sudo apt-get update -y
 # Docker part 2
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-### External Drive
-sudo mkdir /media/media01
+### Create mount point for External HDD
+sudo mkdir /mnt/media01
 
 ### External drive permissions
 sudo chown -R $USER:$USER /mnt/media01
