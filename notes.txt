@@ -23,6 +23,20 @@ FILE STRUCTURE
             /movies
             /shows
 
+
+HOW TO MOUNT: 
+    Drive must be exFAT for simplicity
+
+    Identify drive(s): lsblk
+
+    > Create a mount point: sudo mkdir /mnt/$DRIVENAME
+        > Mount drive to mount point: sudo mount /dev/SDA2* /mnt/media01 EXAMPLE**
+    > Mount on startup:
+        > Get UUID of drive: sudo blkid
+            > Open fstab: sudo nano /etc/fstab
+                > Add new line: UUID=your-drive-uuid /mnt/media01 exFAT defaults 0 2
+    > Permissions: sudo chmod -R 755 /mnt/media01
+                    sudo chmod -R 666 /mnt/media01
 ...
 APPLICATIONS
 > Curl :: https://everything.curl.dev
