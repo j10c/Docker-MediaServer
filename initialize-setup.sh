@@ -48,8 +48,8 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo mkdir /media/media01
 
 ### External drive permissions
-sudo chown -R $USER:$USER /media/media01
-sudo chmod -R a=,a+rX,u+w,g+w /media/media01
+sudo chown -R $USER:$USER /mnt/media01
+sudo chmod -R a=,a+rX,u+w,g+w /mnt/media01
 ß
 #Docker group for permissions
 sudo groupadd docker
