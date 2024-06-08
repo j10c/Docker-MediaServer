@@ -8,7 +8,8 @@ FILE STRUCTURE
         /qbittorrent
         /plex
         /wireguard  # contains VPN .conf files
-        /usenet     
+        /usenet
+        /prowlarr
 
 /data               # volume for Radarr, Sonarr, Overseerr
     /torrents       # volume for qBittorrent 
