@@ -11,18 +11,17 @@ FILE STRUCTURE
         /usenet
         /prowlarr
 
-/data               # volume for Radarr, Sonarr, Overseerr
+/data               # volume for Radarr, Sonarr, Overseerr, Prowlarr
     /torrents       # volume for qBittorrent 
         /movies
         /shows
-        /temp
     /media          # volume for Plex   
         /movies
         /shows
-    /usenet
+    /usenet        # volume for NZBget
         /movies 
         /shows
-        /temp
+
         
 
 
@@ -32,13 +31,13 @@ HOW TO MOUNT:
     Identify drive(s): lsblk
 
     > Create a mount point: sudo mkdir /media/$DRIVENAME
-        > Mount drive to mount point: sudo mount /dev/SDA2* /media/media01 EXAMPLE**
+        > Mount drive to mount point: sudo mount /dev/SDA2* /mnt/volume1 EXAMPLE**
     > Mount on startup:
         > Get UUID of drive: sudo blkid
             > Open fstab: sudo nano /etc/fstab
-                > Add new line: UUID=your-drive-uuid /media/media01 exFAT defaults 0 2
-    > Permissions: sudo chmod -R 755 /media/media01
-                    sudo chmod -R 666 /media/media01
+                > Add new line: UUID=your-drive-uuid /mnt/volume1 exFAT defaults 0 2
+    > Permissions: sudo chmod -R 755 /mnt/volume1
+                    sudo chmod -R 666 /mnt/volume1
 ...
 APPLICATIONS
 > Curl :: https://everything.curl.dev
