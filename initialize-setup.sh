@@ -1,10 +1,54 @@
 #!/bin/bash
 
-# Assign current user to Sudo group
-sudo usermod -aG sudo ${USER}
+# Run the script as SUDO
+sudo -s
 
-# Create directories for apps (running the applications) and data (manage torrents and media)
-sudo mkdir -p /docker/appdata/radarr /docker/appdata/sonarr /docker/appdata/overseerr /docker/appdata/plex /docker/appdata/qbittorrent /docker/appdata/wireguard /docker/appdata/nzbget
+# Create directories 
+mkdir -p /docker/appdata/{radarr,sonarr,prowlarr,overserr,qbittorrent,nzbget,portainer,plex}
+mkdir -p /mnt/{volume1,cache}
+
+### Applications ###
+# Install applications
+apt install curl
+apt install net-tools
+apt install openssh-server
+
+# apt update/upgrades 
+apt update
+apt upgrade
+
+# Docker install
+apt-get install ca-certificates curl
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Docker part 2
+apt-get update
+apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Permissions
+groupadd docker
+usermod -aG sudo,docker jc-admin
+chown -R jc-admin /mnt/volume1 /docker/appdata/ /home/jc-admin/.docker
+chmod g+rwx "$HOME/.docker" -R
+chmod 775 /var/run/docker.sock
+
+# Install portainer and make it always run
+apt-get update
+apt-get upgrade
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+
+# Firewall - enable SSH, Wireguard, Plex & Portainer
+ufw allow ssh,51820,32400,9443
+ufw enable
 
 # appearance=dark, dock icons size=24, terminal=favorites
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
@@ -12,52 +56,3 @@ gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 24
 gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed s/.$//), 'org.gnome.Terminal.desktop']"
 gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed -e "s/'yelp.desktop', //")"
 gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed -e "s/'org.gnome.Software.desktop', //")"
-
-# apt update/upgrades 
-sudo apt update -y
-
-### Applications ###
-# Install applications (Networking tools & Docker)
-sudo apt install curl -y
-sudo apt install net-tools -y
-sudo apt install openssh-server -y
-sudo apt install nfs-common -y
-
-## Configure applications ##
-# OpenSSH Server :: firewall exception
-sudo ufw allow OpenSSH
-
-# Docker install
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-# Add the repository to Apt sources:
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update -y
-
-# Docker part 2
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-### Create mount point for External HDD
-sudo mkdir /mnt/media01
-
-### External drive permissions
-sudo chown -R $USER:$USER /mnt/media01
-sudo chmod -R a=,a+rX,u+w,g+w /mnt/media01
-ß
-#Docker group for permissions
-sudo groupadd docker
-sudo usermod -aG ${USER}
-su -s ${USER}
-sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
-sudo chmod g+rwx "$HOME/.docker" -R
-sudo chmod 666 /var/run/docker.sock
-
-### End of Applications ###
-sudo apt upgrade -y
