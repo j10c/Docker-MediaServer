@@ -1,0 +1,163 @@
+services: 
+# WIREGUARD - route traffic for .arr's and download clients
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - PEERDNS=8.8.8.8
+      - ALLOWEDIPS=0.0.0.0/0
+      - LOG_CONFS=true
+    volumes:
+      - /docker/appdata/wireguard:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+      - 6789:6789 # nzbget
+      - 7878:7878 # radarr
+      - 8989:8989 # sonarr
+      - 5055:5055 # overseerr
+      - 8081:8081 # qbittorrent
+      - 6881:6881 # qbittorrent
+      - 6881:6881/udp # qbittorrent
+      - 9696:9696 # prowlarr
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+# RADARR - Movie manager
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /docker/appdata/radarr:/config 
+      - /mnt/volume1/data:/data
+    #ports:
+      #- 7878:7878 # routed via Wireguard
+    restart: unless-stopped
+#    
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /docker/appdata/sonarr:/config
+      - /mnt/volume1/data:/data
+    #ports:
+      #- 8989:8989 # routed via Wireguard
+    restart: unless-stopped
+# Prowlarr - Radarr & Sonarr manager
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /docker/appdata/prowlarr:/config
+      - /mnt/volume1/data:/data
+    #ports: 
+      #- 9696:9696 # routed via Wireguard
+    restart: unless-stopped
+# Overseerr - Plex requests integration
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /docker/appdata/overseerr:/config
+      - /mnt/volume1/data:/data
+    #ports:
+      #- 5055:5055 # routed via Wireguard
+    restart: unless-stopped
+# NZBget - usenet download client
+  nzbget:
+    image: lscr.io/linuxserver/nzbget:latest
+    container_name: nzbget
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - NZBGET_USER=nzbget
+      - NZBGET_PASS=tegbzn6789
+      - HAS_IPV6=false
+    volumes: 
+      - /docker/appdata/nzbget:/config
+      - /mnt/volume1/data/usenet:/data/usenet
+    #ports:
+      #- 6789:6789 # routed via Wireguard
+    restart: unless-stopped
+# qBittorrent - torrent download client
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - WEBUI_PORT=8081
+      - TORRENTING_PORT=6881
+    volumes:
+      - /docker/appdata/qbittorrent:/config
+      - /mnt/volume1/data/torrents:/data/torrents
+    #ports:
+      #- 8081:8081 # routed via Wireguard
+      #- 6881:6881
+      #- 6881:6881/udp
+    restart: unless-stopped
+#  Plex - media content manager
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - VERSION=docker
+      #- PLEX_CLAIM=YourClaimCodeGoesHere #optional
+      #- ADVERTISE_IP=http://
+    devices:
+      - /dev/dri:/dev/dri # Hardware transcoding ??
+    volumes:
+      #- Hardware transcoding ??
+      - /docker/appdata/plex:/config
+      - /mnt/volume1/data/media/movies:/data/media/movies
+      - /mnt/volume1/data/media/shows:/data/media/shows
+    ports:
+      - 32400:32400
+      #- MAY NEED MORE PORTS
+    restart: unless-stopped
