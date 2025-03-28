@@ -13,7 +13,6 @@ services:
       - PEERDNS=8.8.8.8
       - ALLOWEDIPS=0.0.0.0/0
       - LOG_CONFS=true
-      - LAN_NETWORK=192.168.110.0/24
     volumes:
       - /docker/appdata/wireguard:/config
       - /lib/modules:/lib/modules
@@ -151,8 +150,8 @@ services:
       - VERSION=docker
       #- PLEX_CLAIM=YourClaimCodeGoesHere #optional
       #- ADVERTISE_IP=http://
-    #devices:
-      #- /dev/dri:/dev/dri # Hardware transcoding ??
+    devices:
+      - /dev/dri:/dev/dri # Hardware transcoding ??
     volumes:
       #- Hardware transcoding ??
       - /docker/appdata/plex:/config
